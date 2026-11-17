@@ -1,0 +1,5 @@
+import 'dotenv/config';import express from 'express';import cors from 'cors';import http from 'http';import {Server} from 'socket.io';
+import {connectDB} from './config/db.js';import auth from './routes/auth.js';import issues from './routes/issues.js';import resources from './routes/resources.js';import analytics from './routes/analytics.js';import {notFound,errorHandler} from './middleware/errors.js';
+const app=express();const server=http.createServer(app);const io=new Server(server,{cors:{origin:process.env.CLIENT_ORIGIN||'http://localhost:5173',methods:['GET','POST','PATCH']}});
+app.use(cors({origin:process.env.CLIENT_ORIGIN||'http://localhost:5173'}));app.use(express.json({limit:'1mb'}));app.use((req,res,next)=>{req.io=io;next();});app.get('/api/health',(req,res)=>res.json({status:'ok',service:'CampusPulse API'}));app.use('/api/auth',auth);app.use('/api/issues',issues);app.use('/api/resources',resources);app.use('/api/analytics',analytics);app.use(notFound);app.use(errorHandler);
+const port=process.env.PORT||5000;connectDB().then(()=>server.listen(port,()=>console.log(`CampusPulse API listening on ${port}`))).catch(e=>{console.error(e);process.exit(1)});
