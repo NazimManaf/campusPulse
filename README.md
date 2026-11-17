@@ -40,6 +40,3 @@ Change these credentials immediately outside a local demo. Never deploy with dem
 
 ## Security notes
 Passwords are hashed with bcrypt; JWTs are verified by middleware; privileged routes use role checks; request bodies are validated; CORS is configurable. For production add HTTPS, rate limiting, audit retention, refresh-token rotation, centralized logging and managed secrets.
-
-## Module mapping
-See `docs/PROJECT_REPORT.docx` and `docs/PROJECT_REPORT.md` for the detailed report and mapping to the syllabus.
